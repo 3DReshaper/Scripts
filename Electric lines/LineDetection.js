@@ -6,7 +6,7 @@
 // 2. Click a point on a line to extract (seed point) to launch computation
 
 
-var SHOW_ALL = true; // show all geometric elements used for computation
+var SHOW_ALL = false; // show all geometric elements used for computation
 // ATTENTION: displaying al these elements may lead to high memory usage and slower computation  
 
 /// @brief 
