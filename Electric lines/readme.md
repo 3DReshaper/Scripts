@@ -6,6 +6,6 @@ To use it open the script editor and load LineDetection.js, import your cloud, s
 
 For more information, contact us support at 3DReshaper.com
 
-![alt text](https://github.com/3DReshaper/Scripts/blob/master/Electric%20lines/screenshot.png "screenshot")
+![alt text](https://raw.githubusercontent.com/3DReshaper/Scripts/master/Electric%20lines/Screenshot.png "screenshot")
 
 
