@@ -1,12 +1,14 @@
-
 //This script will project points onto the wall of a tank at angular increments so that radial distance measurements can be taken.
 ////This scrip is useful for creating radial measurements at a given height on a tank
+//The origin of the tanks coordinate system is assumed to be on the bottom of the tank in the cetner of the tank
 //NOTE that if the 3DReshaper file you are using this on has a Local Coordinate system active 
   // the transformation from that will not be applied and the projection will fail.
 //NOTE if the projection fails for given point (there is no mesh where teh point is projecting to) then the
   //then the scrip will place a point on the opposite wall of the tank and you'll end up with two points.  
 
-
+//Revision History
+// 	4/1/2016 - updated to work with 2016 version
+//	4/25/2016 - changed script to start at X+ instead of X- and changed rotation to go clockwise instead of counterclockwise
 
 //Enter the number of radials required and the height at which the radials are to be created
 var theDialog = SDialog.New('Radials');
@@ -18,6 +20,15 @@ if (result.ErrorCode == 0){ // result == 0 means the user click on the "OK" butt
     // Retrieve output values
     var values = result.InputTbl; // InputTbl contains all the content of the input box
     var radialHeight = parseFloat(values[0]);  //use parseFloat() to return a floating point number from the string
+    //if there is no data entered for the radial height, wait while we ask the user to click a point
+    if (isNaN(radialHeight)) {
+        var clickedPoint = GetZHeightByClick();
+        //printP(clickedPoint);
+       
+        radialHeight = clickedPoint.GetZ();
+        radialHeight = radialHeight.toFixed(3);  //we don't need 12 decimals for this.
+        print(radialHeight);
+    }
     var numberOfRadials = parseFloat(values[1]);
 }
 
@@ -34,18 +45,19 @@ var theMesh = testForMesh[0] //mesh is there, grab it
 
 var originPoint = SPoint.New(0, 0, radialHeight); //create an origin point for the radials and add it to the doc.
 originPoint.AddToDoc();
-originPoint.SetName('Z' + radialHeight.toString() + ' center point')
+originPoint.SetName('Z ' + radialHeight.toString() + ' center point')
 
 //make a folder to put the points in
 var folderName = 'Geometric Group' + '/' + 'Z-' + radialHeight;
 originPoint.MoveToGroup(folderName, false);
 
-var initialDirection = SVector.New(1, 0, 0);  //Radials always start from X+
+//we have to make the initialDirection -1 because for some reason, on round meshes, the point returned is always at the -X 
+var initialDirection = SVector.New(-1, 0, 0);  //Radials always start from X+
 var angleBetweenRadials = 360 / numberOfRadials;
 
 
  //start the string that will be output as .CSV
-var outputString = 'Z' + radialHeight + ' Radials ' + 'at ' + angleBetweenRadials + ' degree increments \n';
+var outputString = 'Z ' + radialHeight + ' Radials ' + 'at ' + angleBetweenRadials + ' degree increments \n';
 outputString += originPoint.GetName() + ',' + originPoint.GetX().toString() + ',' + originPoint.GetY().toString() + ',' + originPoint.GetZ().toString() + '\n';
 
 for (i = 0; i < numberOfRadials; i++) {  //project a point at each angle 
@@ -82,7 +94,7 @@ WriteDataToFile(outputString);
 
 function RotateVectorAroundZ (vectorToRotate, rotationAmountInDegrees){
     //set up the rotation matrix
-    var rotationAxisVector =  SVector.New(0,0,1);//this funciton rotates around Z
+    var rotationAxisVector =  SVector.New(0,0,-1);//this funciton rotates around Z in the clockwise direction
     var rotationAxisPoint = SPoint.New(0,0,0);//this function rorates around the origin
     var theMatrix = SMatrix.New(rotationAxisPoint, rotationAxisVector, rotationAmountInDegrees, SMatrix.DEGREE);
     vectorToRotate.ApplyTransformation(theMatrix);
@@ -106,24 +118,42 @@ function Calculate3DDistance(firstPoint, secondPoint) {
 function WriteDataToFile(stringToWrite) {
    
     // get the file path from user
-	var fileName = GetSaveFileName("Save file", "Text files (*.csv)");
+    var fileName = GetSaveFileName( "Save file", "Text files (*.csv)");
 
-	// add the suffix .csv at the end of your filename if necessary
-	if ( fileName.lastIndexOf(".csv") != (fileName.length-4) )
-   		fileName += ".csv";
+    // open the file
+    var file = SFile.New(fileName);
+    if (!file.Open( SFile.WriteOnly ))
+        throw new Error('Failed to write file:' + fileName); // test if we can open the file
 
-	// open the file
-    var file = SFile.New( fileName );
-    // save the data
-    if ( !file.Open( SFile.WriteOnly ) )
-		throw new Error( 'Failed to write file:' + fileName ); // test if we can open the file
-
-	// write data inside the file
+    // write data inside the file
     file.Write(stringToWrite);
 
     // Close the file
     file.Close();
+
     return;
 }
   
+function printP(point) {
+    print("x:" + point.GetX() + " y:" + point.GetY() + " z:" + point.GetZ());
+}
+
+function GetZHeightByClick() {
+    print("Click a point at the height you'd like the radial points to be:");
+    // wait while the user select something
+    while (true) {
+        var res = SPoint.FromClick();
+        switch (res.ErrorCode) {
+            case 0: // an scomp is selected  => ok break the loop
+                return res.Point;
+                break;
+            case 1: // nothing is selected => continue
+                break;
+            case 2: // escape key has been pressed
+                throw new Error("The user stopped the script.");
+                break;
+        }
+    }
+}
+
 

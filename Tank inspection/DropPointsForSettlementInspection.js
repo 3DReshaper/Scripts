@@ -1,8 +1,13 @@
-
 //This script will create points at a radius in an angular increment on a mesh 
 //This script is useful for creating inspection points on a tank floor to inspect settlement
+//The origin of the tanks coordinate system is assumed to be on the bottom of the tank in the cetner of the tank
 //NOTE that if the 3DReshaper file you are using this on has a Local Coordinate system active 
 // the transformation from that will not be applied and the projection will fail.
+
+//Revision History
+//	4/1/2016 - changed scripto work with 2016 version
+//	4/25/2016 - changed script to rotate clockwise
+
 
 //Enter the number of radials required and the height at which the radials are to be created
 var theDialog = SDialog.New('Settlement Points');
@@ -16,6 +21,14 @@ if (result.ErrorCode == 0) { // result == 0 means the user click on the "OK" but
     // Retrieve output values
     var values = result.InputTbl; // InputTbl contains all the content of the input box
     var radius = parseFloat(values[0]);  //use parseFloat() to return a floating point number from the string
+    //if there is no value entered for the radius, wait while we ask the user to click a point to define it
+    if (isNaN(radius)) {
+        var clickedPoint = GetRadiusByClick();
+        //printP(clickedPoint);
+        zeroPoint = SPoint.New(0, 0, 0);
+        radius = Calculate3DDistance(zeroPoint, clickedPoint);//figure out the radius clicked.
+        radius = radius.toFixed(3); //we don't need 12 decimal places here
+    }
     var numberOfPoints = parseFloat(values[1]);
 }
 
@@ -32,7 +45,7 @@ var angleBetweenRadials = 360 / numberOfPoints;
 
 
 //start the string that will be output as .CSV
-var outputString = numberOfPoints + ' at ' + radius + '\n';
+var outputString = numberOfPoints + ' points on the tank bottom at ' + radius + ' radius ' + angleBetweenRadials + ' degrees apart' + '\n';
 
 var projectionDirection = SVector.New(0, 0, 1) //ponits projected onto mesh in Z
 
@@ -74,7 +87,7 @@ WriteDataToFile(outputString);
 function RotatePointAroundZ(pointToRotate, rotationAmountInDegrees) {
 
     var rotationAxisPoint = SPoint.New(0, 0, 0);//this function rorates around the origin
-    var rotationAxisVector = SVector.New(0, 0, 1);//this funciton rotates around Z
+    var rotationAxisVector = SVector.New(0, 0,-1);//this funciton rotates around Z clockwise
     var theMatrix = SMatrix.New(rotationAxisPoint, rotationAxisVector, rotationAmountInDegrees, SMatrix.DEGREE);
 
     return pointToRotate.ApplyTransformation(theMatrix);
@@ -85,23 +98,51 @@ function RotatePointAroundZ(pointToRotate, rotationAmountInDegrees) {
 function WriteDataToFile(stringToWrite) {
 
     // get the file path from user
-	var fileName = GetSaveFileName("Save file", "Text files (*.csv)");
+    var fileName = GetSaveFileName( "Save file", "Text files (*.csv)");
 
-	// add the suffix .csv at the end of your filename if necessary
-	if ( fileName.lastIndexOf(".csv") != (fileName.length-4) )
-   		fileName += ".csv";
+    // open the file
+    var file = SFile.New(fileName);
+    //var openMode = QIODevice.OpenMode(QIODevice.WriteOnly, QIODevice.Text, QIODevice.Truncate);
+    if (!file.Open( SFile.WriteOnly ))
+        throw new Error('Failed to write file:' + fileName); // test if we can open the file
 
-	// open the file
-    var file = SFile.New( fileName );
-    // save the data
-    if ( !file.Open( SFile.WriteOnly ) )
-		throw new Error( 'Failed to write file:' + fileName ); // test if we can open the file
-
-	// write data inside the file
+    // write data inside the file
     file.Write(stringToWrite);
 
     // Close the file
     file.Close();
+
     return;
+
 }
 
+
+function GetRadiusByClick() {
+    print("Click a point at the radius you'd like the dropped radial points to be:");
+    // wait while the user select something
+    while (true) {
+        var res = SPoint.FromClick();
+        switch (res.ErrorCode) {
+            case 0: // an scomp is selected  => ok break the loop
+                return res.Point;
+                break;
+            case 1: // nothing is selected => continue
+                break;
+            case 2: // escape key has been pressed
+                throw new Error("The user stopped the script.");
+                break;
+        }
+    }
+}
+
+
+function Calculate3DDistance(firstPoint, secondPoint) {
+
+    var deltaXSquared = Math.pow(Math.abs(firstPoint.GetX() - secondPoint.GetX()), 2);
+    var deltaYSquared = Math.pow(Math.abs(firstPoint.GetY() - secondPoint.GetY()), 2);
+    var deltaZSquared = Math.pow(Math.abs(firstPoint.GetZ() - secondPoint.GetZ()), 2);
+
+    var sumSquares = deltaXSquared + deltaYSquared + deltaZSquared;
+    var tst = Math.sqrt(sumSquares);
+    return Math.sqrt(sumSquares);
+}
