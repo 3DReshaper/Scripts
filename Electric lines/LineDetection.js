@@ -1,3 +1,4 @@
+
 // ------------------------ HOW TO USE IT --------------------------------------------
 // 1. Adjust the sampling step of the polyline to extract from the cloud
 // 	The sampling step must be big enough to include line curvature and to have anough points in the cloud in a step size
@@ -6,9 +7,10 @@
 // 2. Click a point on a line to extract (seed point) to launch computation
 
 
-var SHOW_ALL = false; // show all geometric elements used for computation
+var SHOW_ALL = true; // show all geometric elements used for computation
 // ATTENTION: displaying al these elements may lead to high memory usage and slower computation  
 
+var AllGeomElements = new Array;
 /// @brief 
 /// compute the max distance between points of a cloud and a line
 /// @ return
@@ -45,7 +47,10 @@ function InitLine(
 	// Extract part of the cloud
 	var sphere = SSphere.New(_iExtractPt, _iSphereRadius);
 	if(SHOW_ALL==true)
+	{
 		sphere.AddToDoc();
+		AllGeomElements.push(sphere);
+	}
 
 	var result = _iInitialCloud.SeparateFeature(sphere, 0);
 	if (result.ErrorCode != 0)
@@ -106,7 +111,10 @@ function NextLine(	_iCloud, 	// [in] the cloud to extract the line
 		, _iLength
 		);
 	if(SHOW_ALL==true)
+	{
 		cone.AddToDoc();
+		AllGeomElements.push(cone);
+	}
 	
 	// Separate the cloud with this cone to work only on the stack part
 	var result = _iCloud.SeparateFeature(cone,0);
@@ -164,7 +172,7 @@ function NextLine(	_iCloud, 	// [in] the cloud to extract the line
 function main()
 {
 	// Get the cloud
-	var result = SCloud.FromSel();	
+	var result = SCloud.All();	
 	if (result.length!=1)
 		throw new Error( "Please select (only) 1 cloud before launching the script" );
 	var cloudToTreat = result[0];
@@ -174,7 +182,7 @@ function main()
 	theDialog.AddLine("1. Adjust the sampling step of the multiline ", false);
 	theDialog.AddLine("2. Click OK ", false);
 	theDialog.AddLine("3. Click a seed point on the cloud in the scene ", false);
-	theDialog.AddLine("Sampling step: ", true);
+	theDialog.AddLine("Sampling step: ", true, Array(), 2);
 	var result = theDialog.Execute();
 	if (result.ErrorCode == 0)
 	{ // result == 0 means the user click on the "OK" button
@@ -249,6 +257,14 @@ function main()
 
 		result = NextLine(cloudToTreat,result.Point1,dir,result.Dist,SAMPLING_STEP);
 	}
+	
+	trackLine.SetColors(1,0,0);
+	trackLine.SetLineWidth(6);
+	trackLine.SetName("Electric Line");
+	
+	// hidding geometric elements
+	for(ii=0; ii<AllGeomElements.length; ii++)
+		AllGeomElements[ii].SetVisibility(false);
 
 	trackLine.AddToDoc();
 	print("Computation finished !");
