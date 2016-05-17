@@ -7,3 +7,12 @@ To use it, open the script editor and load LineDetection.js, import your cloud, 
 For more information, contact us support at 3DReshaper\.com
 
 ![alt text](https://raw.githubusercontent.com/3DReshaper/Scripts/master/Electric%20lines/Screenshot.png "screenshot")
+
+# Download Files
+
+You can download individual file using these links (for text file, right click on the link and choose "Save as..."):
+
+- [LineDetection.js] (https://raw.githubusercontent.com/3DReshaper/Scripts/master/Electric%20lines/LineDetection.js)
+- [LineDetection_sample.asc] (https://raw.githubusercontent.com/3DReshaper/Scripts/master/Electric%20lines/LineDetection_sample.asc)
+
+Or all scripts on this site can be download in a [single zip file] (https://github.com/3DReshaper/Scripts/archive/master.zip).
