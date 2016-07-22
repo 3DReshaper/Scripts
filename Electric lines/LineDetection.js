@@ -7,7 +7,7 @@
 // 2. Click a point on a line to extract (seed point) to launch computation
 
 
-var SHOW_ALL = true; // show all geometric elements used for computation
+var SHOW_ALL = false; // show all geometric elements used for computation
 // ATTENTION: displaying al these elements may lead to high memory usage and slower computation  
 
 var AllGeomElements = new Array;
@@ -172,9 +172,9 @@ function NextLine(	_iCloud, 	// [in] the cloud to extract the line
 function main()
 {
 	// Get the cloud
-	var result = SCloud.All();	
+	var result = SCloud.All(1);	
 	if (result.length!=1)
-		throw new Error( "Please select (only) 1 cloud before launching the script" );
+		throw new Error( "Please show (only) 1 cloud before launching the script" );
 	var cloudToTreat = result[0];
 
 	//Enter the sampling step
