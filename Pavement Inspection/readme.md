@@ -2,7 +2,7 @@
 
 This script provides a functionality to inspect pavement from a mesh and a central line in 3DReshaper.
 
-To use it:
+To use it: <br />
 1. Import your mesh and the central line (as a polyline)
 2. Open the script editor and load PavementInspection-CreateLines.js
 3. Select the mesh and the central line and run the script like if you were running a 3DReshaper command. You will be required to enter the number of offset and the offset increment
