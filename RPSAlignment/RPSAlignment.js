@@ -1,12 +1,12 @@
 // =======================================================================
 // =========================== DESCRIPTION ===============================
 // This script will show you how to make an alignment of a mechanical part 
-// using the RPS method. To do this, the script requests to click 
-// points on the scene (3 for the first plane, 2 for the second plane
-// , 1 for the last one). 
-// For each series of points, the script shows a red plane in the model. The 
-// user has to click points on this plane on the scanned data. Once the user 
-// selects 6 points, the alignment is computed. A best fit is then applied. 
+// using the RPS method. 
+// The script requests to click points on the scene (3 for the first plane, 
+// 2 for the second plane, 1 for the last one). 
+// For each series of points, the script shows a red plane in the model. 
+// The  user has to define the corresponding points on the scanned data. 
+// Once the user selects 6 points, the alignment is computed. A best fit is then applied. 
 // 
 // Once the part is well aligned, the script does :
 // - a comparison between 2 planes
