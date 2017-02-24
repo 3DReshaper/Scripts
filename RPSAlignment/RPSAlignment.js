@@ -14,6 +14,7 @@
 // - an extraction of a circle concentric to the cylinders
 // - an inspection of the face with a free form
 // - create some lables with distance and point coordinates
+// - create a pdf report and open it
 // =======================================================================
 
 var NB_LOOP = 1;

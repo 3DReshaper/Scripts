@@ -5,8 +5,8 @@ This script shows how to make an alignment of a mechanical part using the RPS me
 To use it, open the script editor and load RPSAlignment.js,
 
 The script requests to click points on the scene (3 for the first plane, 2 for the second plane, 1 for the last one). 
-For each series of points, the script shows a red plane in the model. The  user has to click points on this plane on the scanned data. Once the user 
-selects 6 points, the alignment is computed. A best fit is then applied. 
+For each series of points, the script shows a red plane in the model. The  user has to define the corresponding points on the scanned data. 
+Once the user selects 6 points, the alignment is computed. A best fit is then applied. 
  
 Once the part is well aligned, the script does :
  - a comparison between 2 planes
@@ -14,10 +14,11 @@ Once the part is well aligned, the script does :
  - an extraction of a circle concentric to the cylinders
  - an inspection of the face with a free form
  - create some lables with distance and point coordinates
+ - create a pdf report and open it
 
  For more information, contact us support at 3DReshaper\.com
 
-![alt text](https://raw.githubusercontent.com/3DReshaper/Scripts/master/RPSAlignment/Screenshot.png "screenshot")
+![alt text](https://raw.githubusercontent.com/3DReshaper/Scripts/master/RPSAlignment/screenshot.png "screenshot")
 
 # Download Files
 
