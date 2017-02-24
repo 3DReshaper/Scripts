@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocHexmet>
+    <ReportInfo date="Friday, February 24, 2017" time="15:44:01" username="MyUserName" filename="I:/Sources/Github_Scripts/RPSAlignment\report\BlocHexmetReport_resources/"/>
+    <elms>
+        <elm type="cylinder" name="Cylinder-Coaxiality">
+            <image name="Cylinder.png"/>
+            <distance minimal="19.9389553279464" maximal="40.24780483507465"/>
+        </elm>
+        <elm type="circle" name="Circle-Compare">
+            <image name="Circle.png"/>
+            <points>
+                <point name="Measured center" x_coord="80.01138309858842" y_coord="-119.91157394577866" z_coord="30.094534074074485"/>
+                <normal x_norm="0.005666705844243406" y_norm="0.9999293043206013" z_norm="0.01045345903483914"/>
+                <point name="Nominal center" x_coord="80" y_coord="-119.99999999999994" z_coord="30.000000000000014"/>
+                <normal x_norm="-2.0046360866137113e-16" y_norm="1" z_norm="-1.0891648896308222e-16"/>
+            </points>
+        </elm>
+        <elm type="surface" name="WaveFace-Inspection">
+            <image name="WaveFace.png"/>
+            <points>
+                <point name="Maximal point" x_coord="239.28797746533485" y_coord="0.3377664556598603" z_coord="39.99383656897966"/>
+            </points>
+        </elm>
+    </elms>
+</blocHexmet>
