@@ -13,7 +13,7 @@ Once the part is well aligned, the script does :
  - an extraction of 2 concentric cylinders
  - an extraction of a circle concentric to the cylinders
  - an inspection of the face with a free form
- - create some lables with distance and point coordinates
+ - create some labels with distance and point coordinates
  - create a pdf report and open it
 
  For more information, contact us support at 3DReshaper\.com
