@@ -2,7 +2,7 @@
 /// @brief
 /// To extract part of the cloud inside the multiline, Tolerance will define the thickness to extract
 /// @return the cloud extrated named "Extract_" + Multi.GetName()
-function ExtractCloudWithMulti(Cloud, Multi, Tolerance, Direction, IsInside/*true: inside, false: outside*/, demo)
+function ExtractCloudWithMulti(Cloud, Multi, Tolerance, InvTolerance, Direction, IsInside/*true: inside, false: outside*/, demo)
 {	
 	if (demo)
 	{
@@ -18,6 +18,8 @@ function ExtractCloudWithMulti(Cloud, Multi, Tolerance, Direction, IsInside/*tru
 	var rightPt = SPoint.New(centroid);		rightPt.Translate(Normal); // right pt
 	var OppositeNormal = SVector.New(Normal);
 	OppositeNormal.Opposite();
+	OppositeNormal.SetNormed();
+	OppositeNormal = OppositeNormal.Mult(InvTolerance);
 	var leftPt = SPoint.New(centroid);		leftPt.Translate(OppositeNormal); // left pt
 	
 	// compute right and left multiline (only for demo)

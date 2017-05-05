@@ -29,6 +29,7 @@ var IsDistBtwFacesEnable = false; // <==========================================
 var IsCylinderEnable = true; // <========================================================= compute cylinder coaxiality
 var IsCircleEnable = true; // <=========================================================== compute circle center position
 var IsWaveFaceEnable = true; // <========================================================= inspection of the wave face
+var IsCreateReport = true; // <========================================================= creating the report
 
 var AskCloudFile = false; // <============================================================ if we ask a cloud to the user
 var AskAlignPoint = true; // <=========================================================== if we ask point click to the user
@@ -193,10 +194,11 @@ try
 			Sleep(LONG_TIME);
 		}
 		CircleOut = CreateConcentricCircle(Circle, SVector.New(0, 1, 0), Tolerance, SMultiline.OTHER_SIDE);
+		CircleOut.SetName("CircleOut")
 		CircleOut.AddToDoc();
 		if (demo)Sleep(LONG_TIME);
 		Circle.SetVisibility(false);
-		var extractedCloud = ExtractCloudWithMulti(MeasuredCloud, CircleOut, Tolerance, SVector.New(0, 1, 0), true/*true: inside, false: outside*/, demo);
+		var extractedCloud = ExtractCloudWithMulti(MeasuredCloud, CircleOut, Tolerance, Tolerance, SVector.New(0, 1, 0), true/*true: inside, false: outside*/, demo);
 		var bestCircle = extractedCloud.BestCircle(
 			SCloud.INNER_CIRCLE // [in] Method method to measure the circle (best, inner, outer, circularity, max inscribed, min circumscribed)  
 			);
@@ -262,13 +264,11 @@ try
 		}
 		var Tolerance = 0.8;
 		var WaveMultiOut = GetMulti_FromName("WaveMultiOut");
-		var extractedCloud = ExtractCloudWithMulti(MeasuredCloud, WaveMultiOut, 5*Tolerance, SVector.New(0, 1, 0), true/*true: inside, false: outside*/, demo);
+		var extractedCloud = ExtractCloudWithMulti(MeasuredCloud, WaveMultiOut, 30, 1, SVector.New(0, 1, 0), true/*true: inside, false: outside*/, demo);
 		if (demo)
 		{
 			MeasuredCloud.SetVisibility(false);
 		}
-		var WaveMultiIn = GetMulti_FromName("WaveMultiIn");
-		var extractedCloud = ExtractCloudWithMulti(extractedCloud, WaveMultiIn, 50*Tolerance, SVector.New(0, 1, 0), false/*true: inside, false: outside*/, demo);
 
 
 		var WavePoly = GetPoly_CADFromName(WaveCadName); // the CAD polyhedron
@@ -358,36 +358,38 @@ catch(e)
 //======================================================================================================================
 // Create Pdf Report ?
 //======================================================================================================================
-
-// @retval Array.ErrorCode The error code:\n
-// - 0	OK
-// - 1	An exception occurred !
-// - 2	Failed to generate pdf report. See 'Array.ErrorMsg' for error details.
-// @retval Array.ErrorMsg  A message which describe why the generation of the pdf report failed
-var pdfRet = CreatePdfReport(
-		templateHtmlFileName, // [in] Template html file use as an input of freemarker
-		outputPdfReport, // [in] Output pdf file create from the template using freemarker
-		"", // [in] Name of the sub folder where are extra html file (.jpg, .css, .js).
-		// If string is empty, not extra file will be copied.
-		xmlFile, // [in] Can be empty. If not it's the Xml file that will be used to
-		// generate the final html file from the template using freemarker.
-		templateHeaderHtmlFileName, // [in] Template header html file use as an input of freemarker
-		// and that will be used by wkhtmltopdf to add a header at the beginning of each page.
-		// see http://madalgo.au.dk/~jakobt/wkhtmltoxdoc/wkhtmltopdf-0.9.9-doc.html for more help.
-		templateFooterHtmlFileName, // [in] Template footer html file use as an input of freemarker
-		// and that will be used by wkhtmltopdf to add a footer at the end of each page.
-		true // [in] If true:
-		// - generate a batch file for the user that can be used to launch again the creation of the final pdf file
-		// - keep the intermediate html file which have been used to generate the pdf file.
-		);
-if(pdfRet.ErrorCode != 0)
+if(IsCreateReport == true)
 {
-	print("Pdf Generation error:\n" + pdfRet.ErrorMsg);
-}
-else
-{
-	// Open PDF file
-	OpenUrl("file:///" + outputPdfReport);
+	// @retval Array.ErrorCode The error code:\n
+	// - 0	OK
+	// - 1	An exception occurred !
+	// - 2	Failed to generate pdf report. See 'Array.ErrorMsg' for error details.
+	// @retval Array.ErrorMsg  A message which describe why the generation of the pdf report failed
+	var pdfRet = CreatePdfReport(
+			templateHtmlFileName, // [in] Template html file use as an input of freemarker
+			outputPdfReport, // [in] Output pdf file create from the template using freemarker
+			"", // [in] Name of the sub folder where are extra html file (.jpg, .css, .js).
+			// If string is empty, not extra file will be copied.
+			xmlFile, // [in] Can be empty. If not it's the Xml file that will be used to
+			// generate the final html file from the template using freemarker.
+			templateHeaderHtmlFileName, // [in] Template header html file use as an input of freemarker
+			// and that will be used by wkhtmltopdf to add a header at the beginning of each page.
+			// see http://madalgo.au.dk/~jakobt/wkhtmltoxdoc/wkhtmltopdf-0.9.9-doc.html for more help.
+			templateFooterHtmlFileName, // [in] Template footer html file use as an input of freemarker
+			// and that will be used by wkhtmltopdf to add a footer at the end of each page.
+			true // [in] If true:
+			// - generate a batch file for the user that can be used to launch again the creation of the final pdf file
+			// - keep the intermediate html file which have been used to generate the pdf file.
+			);
+	if(pdfRet.ErrorCode != 0)
+	{
+		print("Pdf Generation error:\n" + pdfRet.ErrorMsg);
+	}
+	else
+	{
+		// Open PDF file
+		OpenUrl("file:///" + outputPdfReport);
+	}
 }
 
 } // end_while(NB_LOOP)
