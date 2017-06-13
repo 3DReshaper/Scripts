@@ -178,7 +178,7 @@ function main()
 	var cloudToTreat = result[0];
 
 	//Enter the sampling step
-	var theDialog = SDialog.New('Radials');
+	var theDialog = SDialog.New('Rail extraction parameters');
 	theDialog.AddLine("1. Adjust the sampling step of the multiline ", false);
 	theDialog.AddLine("2. Click OK ", false);
 	theDialog.AddLine("3. Click a seed point on the cloud in the scene ", false);
