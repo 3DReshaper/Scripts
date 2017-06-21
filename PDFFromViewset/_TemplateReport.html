@@ -1,0 +1,68 @@
+﻿<html>
+	<head>
+		<title>My Report</title>
+		<meta http-equiv='Content-Type' content='text/html;charset=utf-8'/>
+		<meta name="Version" content="0.2.13"/>
+		
+		<#assign htmlFilesDir=doc.ReportData.ReportInfo.@filename>
+		<#setting number_format="0.####"> <!-- Set number of digits display after the point -->
+
+		<!-- Css Files -->
+		<link rel="stylesheet" type="text/css" href="${htmlFilesDir}/Report.css"/>
+		<link rel="stylesheet" type="text/css" href="${htmlFilesDir}/jquery.jqplot.min.css"/>
+		
+	</head>
+
+	<body>
+		<center>
+		<h2>${doc.ReportData.ReportInfo.@reportTitle}</h2>
+		</center>
+		
+		<center>
+		<br><br><br>
+		<#list doc.ReportData.elms.elm as Elm>
+			<br><br><br>
+			<table class='section-image' border='1' cellspacing='0'>
+				<tr>
+					<th colspan='5'>${Elm.@name}</th>
+				</tr>
+				<tr>
+					<td>
+						<img  class="section-image" src="${htmlFilesDir}/${Elm.image.@name}"/>
+					</td>
+				</tr>
+			</table>
+			<#if Elm.points[0]??>
+			<br>
+			<table class='section-table'  border='1' cellspacing='0'>
+				<tr>
+					<td></td><td>X</td><td>Y</td><td>Z</td>
+				</tr>
+				<#list Elm.points.point as Point>
+				<tr>
+					<td>${Point.@name}</td><td>${Point.@x_coord?number}</td><td>${Point.@y_coord?number}</td><td>${Point.@z_coord?number}</td>
+				</tr>
+				</#list>
+			</table>
+			</#if>
+			<#if Elm.distance[0]??>
+			<br>
+			<table class='section-table'  border='1' cellspacing='0'>
+				<tr>
+					<td></td><td>Minimal</td><td>Maximal</td>
+				</tr>
+				<#list Elm.distance as Distance>
+				<tr>
+					<td>Distance</td><td>${Distance.@minimal?number}</td><td>${Distance.@maximal?number}</td>
+				</tr>
+				</#list>
+			</table>
+			</#if>
+			<#if Elm_has_next>
+				<div style="page-break-before:always"></div> <!-- Generate a page break when printing -->	
+			</#if>
+			</#list>
+		</center>
+
+	</body>
+</html>

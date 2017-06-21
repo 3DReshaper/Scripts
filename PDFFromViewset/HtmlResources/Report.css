@@ -1,0 +1,135 @@
+.summary_table
+{
+	cellspacing:0;
+	width:100%;
+	align:center;
+	border:0ps;
+}
+.summary_greyrow
+{
+	background-color:#CCCCCC;
+}
+.summary_stentIdentifier
+{
+	font-style:italic;
+	text-align:center;
+}
+.summary_value
+{
+	font-style:italic;
+	padding-left: 5px;
+}
+.summary_section
+{
+	font-style:italic;
+	padding-left: 5px;
+}
+.section-table
+{
+	page-break-inside:avoid;
+	border-collapse:collapse;
+	border:1px solid black;
+}
+.section-table th
+{
+	text-align:right;
+	padding-left:10px;
+	padding-right:10px;
+	border-collapse:collapse;
+	border:1px solid black;
+}
+.section-table tr:first-child th:first-child 
+{
+	text-align:center;
+	border-collapse:collapse;
+	border:1px solid black;
+}
+.section-table td
+{
+	padding-left:5px;
+	padding-right:5px;
+	border-collapse:collapse;
+	border:1px solid black;
+}
+.section-table tr:first-child 
+{
+	padding-left:10px;
+	border-collapse:collapse;
+	border:1px solid black;
+	background-color:#CCCCCC;
+}
+
+.section-table-line
+{
+	page-break-inside:avoid;
+}
+
+.section-image
+{
+	page-break-inside:avoid;
+	height:253; /* 11 row * 23 px */
+}
+.section-image tr:first-child 
+{
+	padding-left:10px;
+	border-collapse:collapse;
+	border:1px solid black;
+	background-color:#CCCCCC;
+}
+.section-image img
+{
+	width:1000px;
+	height:1000px;
+}
+
+.section-voids-image
+{
+	height:69; /* 3 row * 23 px */
+}
+.section-gaps-image
+{
+	height:69; /* 3 row * 23 px */
+}
+.bb-wrap-angle-chart
+{
+	page-break-inside:avoid;
+	height:300px;
+	width:600px;
+}
+
+.values-table
+{
+	font-size:x-small;
+	page-break-inside:avoid;
+	border-collapse:collapse;
+	border:1px solid black;
+}
+.values-table th
+{
+	border-collapse:collapse;
+	border:1px solid black;
+	padding-left:5px;
+	padding-right:5px;
+	background-color:#505050;
+}
+.values-table td
+{
+	border-collapse:collapse;
+	border:1px solid black;
+	padding-left:2px;
+	padding-right:2px;
+	text-align:center;
+}
+.values-table tr:nth-child(odd)
+{
+	background-color:#e5e5e5;
+}
+.values-table tr:nth-child(even)
+{
+	background-color:#ffffff;
+}
+
+.unit
+{
+	font-style:italic;
+}
