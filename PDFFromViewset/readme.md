@@ -10,8 +10,8 @@ To use it: <br />
 
 For more information, contact us support at 3DReshaper\.com
 
-![alt text](https://raw.githubusercontent.com/3DReshaper/Scripts/master/PDFFromViewset/ScreenShot1.png "screenshot1")
-![alt text](https://raw.githubusercontent.com/3DReshaper/Scripts/master/PDFFromViewset/ScreenShot2.png "screenshot2")
+![alt text](https://github.com/3DReshaper/Scripts/blob/master/PDFFromViewset/ScreenShot1.PNG "screenshot1")
+![alt text](https://github.com/3DReshaper/Scripts/blob/master/PDFFromViewset/ScreenShot2.PNG "screenshot2")
 
 # Download Files
 
@@ -28,3 +28,4 @@ You can download individual file using these links (for text file, right click o
 - [Report.css] (https://raw.githubusercontent.com/3DReshaper/Scripts/master/PDFFromViewset/HtmlResources/Report.css)
 
 Or all scripts on this site can be download in a [single zip file] (https://github.com/3DReshaper/Scripts/archive/master.zip).
+
