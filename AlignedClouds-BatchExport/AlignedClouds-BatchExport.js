@@ -29,7 +29,7 @@ for (i=0; i<arrayCloudToExport.length;i=i+1){
 	var step2= SMatrix.BestFitCompute(bothClouds,0,0,SMatrix.ALL_MOVEMENT,0,0,true)
 	myMovingCloud.ApplyTransformation(step2.MatrixTbl[1]);
 	step2.MatrixTbl[1].ApplyTransformation(step1);
-	//myMovingCloud.AddToDoc();
+	////myMovingCloud.AddToDoc();
 
 	//Save the matrix in a csv file
 	var csvReport=new String();
