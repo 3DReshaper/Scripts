@@ -4,8 +4,6 @@ This page contains sample scripts for 3DReshaper software, http://www.3dreshaper
 
 For more information about scripts in 3DReshaper, see http://www.3dreshaper.com/en/software-en/3dreshaper-en/script-automation
 
-A dedicated forum about writing Javascript for 3DReshaper is available here: http://www.3dreshaper.com/en/software-en/support-software-en/forum-software-en
-
 # Download Scripts
 
 All scripts can be download in a [single zip file] (https://github.com/3DReshaper/Scripts/archive/master.zip).
