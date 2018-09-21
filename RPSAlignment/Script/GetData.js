@@ -24,7 +24,7 @@ function GetPoly_CADFromName(Name)
 	if (CADDiscretization.ErrorCode != 0)
 		throw new Error('Impossible to discretize this CAD object.');
 
-	var compoundPoly = SPoly.MergeCommonBorders(
+	var compoundPoly = SPoly.CreateCompound(
 		CADDiscretization.PolyTbl, // [in, out] Table of SPoly to proceed.
 		// All the mesh are empty when returning from this function.
 		0 // [in] Should we to orient all the parts to have the same normal orientation ?
