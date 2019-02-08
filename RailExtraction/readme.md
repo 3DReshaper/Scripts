@@ -9,19 +9,19 @@ Note:
 
 For more information, contact us support at 3DReshaper\.com
 
-![alt text](https://raw.githubusercontent.com/3DReshaper/Scripts/master/Rail%20Extraction/Screenshot.png "screenshot")
+![alt text](https://raw.githubusercontent.com/3DReshaper/Scripts/master/RailExtraction/Screenshot.png "screenshot")
 
 # Download Files
 
 You can download individual file using these links (for text file, right click on the link and choose "Save as..."):
 
-- [00_utils.js] (https://raw.githubusercontent.com/3DReshaper/Scripts/master/Rail%20Extraction/00_utils.js)
-- [00_Variables.js] (https://raw.githubusercontent.com/3DReshaper/Scripts/master/Rail%20Extraction/00_Variables.js)
-- [01_Initialize.js] (https://raw.githubusercontent.com/3DReshaper/Scripts/master/Rail%20Extraction/01_Initialize.js)
-- [02_NextExtraction.js] (https://raw.githubusercontent.com/3DReshaper/Scripts/master/Rail%20Extraction/02_NextExtraction.js)
-- [RailExtraction.js] (https://raw.githubusercontent.com/3DReshaper/Scripts/master/Rail%20Extraction/RailExtraction.js)
-- [Track_01.laz] (https://raw.githubusercontent.com/3DReshaper/Scripts/master/Rail%20Extraction/Track_01.laz)
-- [Track_02.laz] (https://raw.githubusercontent.com/3DReshaper/Scripts/master/Rail%20Extraction/Track_02.laz)
-- [Trajectory.dxf] (https://raw.githubusercontent.com/3DReshaper/Scripts/master/Rail%20Extraction/Trajectory.dxf)
+- [00_utils.js] (https://raw.githubusercontent.com/3DReshaper/Scripts/master/RailExtraction/00_utils.js)
+- [00_Variables.js] (https://raw.githubusercontent.com/3DReshaper/Scripts/master/RailExtraction/00_Variables.js)
+- [01_Initialize.js] (https://raw.githubusercontent.com/3DReshaper/Scripts/master/RailExtraction/01_Initialize.js)
+- [02_NextExtraction.js] (https://raw.githubusercontent.com/3DReshaper/Scripts/master/RailExtraction/02_NextExtraction.js)
+- [RailExtraction.js] (https://raw.githubusercontent.com/3DReshaper/Scripts/master/RailExtraction/RailExtraction.js)
+- [Track_01.laz] (https://raw.githubusercontent.com/3DReshaper/Scripts/master/RailExtraction/Track_01.laz)
+- [Track_02.laz] (https://raw.githubusercontent.com/3DReshaper/Scripts/master/RailExtraction/Track_02.laz)
+- [Trajectory.dxf] (https://raw.githubusercontent.com/3DReshaper/Scripts/master/RailExtraction/Trajectory.dxf)
 
 Or all scripts on this site can be download in a [single zip file] (https://github.com/3DReshaper/Scripts/archive/master.zip).
