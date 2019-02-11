@@ -1,4 +1,4 @@
-
+/// <reference path="C:\Program Files\3DReshaper_18.1_x64\docScript\Reshaper.d.ts"/>
 	
 //--------------------------------------------------------------
 // define variables	

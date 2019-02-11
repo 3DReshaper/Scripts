@@ -1,4 +1,4 @@
-
+/// <reference path="C:\Program Files\3DReshaper_18.1_x64\docScript\Reshaper.d.ts"/>
 
 // stack
 var C_STACK_WIDTH = 0.065; // 6.5cm

@@ -1,4 +1,4 @@
-
+/// <reference path="C:\Program Files\3DReshaper_18.1_x64\docScript\Reshaper.d.ts"/>
 	
 function Extract(
 			_iCloud // [in] The cloud to treat
@@ -96,7 +96,7 @@ function Extract(
 	
 	//--------------------------------------------------------------
 	// ? Is scalar product too important
-	if ( scalarProduct < 0.998 ) // deviation > 1.14° between the two tracks
+	if ( scalarProduct < 0.998 ) // deviation > 1.14ï¿½ between the two tracks
 	{		
 		return {
 			"ErrorCode": 0
@@ -150,7 +150,7 @@ function NextTrack(
 	var TRANSLATION = 0.25; // 25cm
 	var CYLINDER_RADIUS = C_STACK_WIDTH;
 	var CYLINDER_LENGTH = 2; // 2 m
-	var ANGLE_DEVIATION = 0.998; // ~2.5°
+	var ANGLE_DEVIATION = 0.998; // ~2.5ï¿½
 	
 	var cylinderPt = _iTrackData.Point;
 	var cylinderDir = _iTrackData.Direction;
@@ -424,7 +424,7 @@ function ExtractClip(_iCloud, _iLine)
 	// scalar product
 	var scalarProduct = SVector.Dot(planeNormal, lineDirection);
 	
-	if ( Math.abs(scalarProduct) > 0.9) // 25°
+	if ( Math.abs(scalarProduct) > 0.9) // 25ï¿½
 	{
 		//--------------------------------------------------------------
 		// Create a sphere
@@ -469,7 +469,7 @@ function NextCatenary(
 	var TRANSLATION = 0.25; // 25cm
 	var CYLINDER_RADIUS = 0.5; // 50cm <------ bigger cylinder
 	var CYLINDER_LENGTH = 2; // 2 m
-	var ANGLE_DEVIATION = 0.998; // ~2.5°
+	var ANGLE_DEVIATION = 0.998; // ~2.5ï¿½
 	
 	var cylinderPt = _iTrackData.Point;
 	var cylinderDir = _iTrackData.Direction;
