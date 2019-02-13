@@ -98,7 +98,7 @@ function main()
 			clipPlane.Move(CLIP_STEP);
 			clipPlane.ClipAll();
 
-			var resToCloud = theSCwCloud.ToCloud(60000000).Cloud;
+			var resToCloud = theSCwCloud.ToCloud(60000000);
 			if(resToCloud.ErrorCode==0)
 			{
 				cloudToTreat = resToCloud.Cloud;
