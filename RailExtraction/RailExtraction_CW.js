@@ -82,6 +82,7 @@ function main()
 				TrackData.push(result);
 				lastTrack = result;
 				ExtractionIsOk = true; // if we have at least extract one track section on the current cloud
+				Repaint();
 			}
 			TrackData.shift();
 		}
