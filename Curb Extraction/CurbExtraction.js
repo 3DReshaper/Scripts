@@ -1,3 +1,6 @@
+/// <reference path="C:\Program Files\Leica Geosystems\Cyclone 3DR 19.1\Script\JsDoc\Reshaper.d.ts"/>
+
+
 // ------------------------ HOW TO USE IT --------------------------------------------
 // 1. The algorithm uses the displayed cloud (or Cloudworx cloud) to extract the curb! => Make sure only 1 cloud (or CWxCloud) is displayed before launching the script
 // 2. At least 1 polyline should be selected. But 2 polylines can be selected.
@@ -87,16 +90,20 @@ function main(allCWCloud, theCloud, theMeshes, theLine, outMultis)
 		var theLocalPoly = ResMesh.Poly
 		theLocalPoly.SetName('localMesh_' + iter)
 		
-		var resBF = SMatrix.BestFitCompute([theLocalPoly, theMeshes.TopMesh],0.1*Param.unitsConv)
-		newLine.ApplyTransformation(resBF.MatrixTbl[1])
-		theMeshes.TopMesh.ApplyTransformation(resBF.MatrixTbl[1])
-		
 		if(Param._DEBUG)
 		{
 			theLocalPoly.AddToDoc();
 			var copyMesh = SPoly.New(theMeshes.TopMesh)
 			copyMesh.AddToDoc()
 		}
+
+		var resBF = SMatrix.BestFitCompute([theLocalPoly, theMeshes.TopMesh],0.1*Param.unitsConv)
+		if(resBF.ErrorCode!=0)
+			StopWithMessage("Did not manage to best fit")
+
+		newLine.ApplyTransformation(resBF.MatrixTbl[1])
+		theMeshes.TopMesh.ApplyTransformation(resBF.MatrixTbl[1])
+		
 		var pointToInsert = newLine.GetCenter()
 		outMultis.MultiOnTop.InsertLast(pointToInsert)
 		
@@ -203,6 +210,9 @@ function DeltaZ(theCloud, theLine)
 			InvMat.InitInverse(matrix)
 			cloudYP.ApplyTransformation(InvMat)
 			cloudYP.AddToDoc()
+			var tmpSphere = SSphere.New(theSphereP);
+			tmpSphere.ApplyTransformation(InvMat)
+			tmpSphere.AddToDoc();
 		}
 		StopWithMessage(["Only " + cloudYP.GetNumber() + " points in the cloud on the left the line"])
 	}
@@ -216,6 +226,9 @@ function DeltaZ(theCloud, theLine)
 			InvMat.InitInverse(matrix)
 			cloudYM.ApplyTransformation(InvMat)
 			cloudYM.AddToDoc()
+			var tmpSphere = SSphere.New(theSphereM);
+			tmpSphere.ApplyTransformation(InvMat)
+			tmpSphere.AddToDoc();
 		}
 		StopWithMessage(["Only " + cloudYM.GetNumber() + " points in the cloud on the right the line"])
 	}
@@ -325,7 +338,14 @@ function extractLowCurbPoint(pointToInsert, theLocalCloud, theLine)
 		ResBestPlane = cloudY.BestPlane(Math.ceil(cloudY.GetNumber()*0.2))
 	}
 	var streetPlane = ResBestPlane.Plane
-	var LowCurbPoint = streetPlane.Proj3D(pointToInsert).Point
+
+	var projDir = SVector.New(0, -LeftRight*Math.sin(Param.CurbAngle*Math.PI/180), Math.cos(Param.CurbAngle*Math.PI/180))
+	projDir.ApplyTransformation(InvMat)
+	var tmpLine = SLine.New(theLine.GetCenter(),projDir,0.1)
+	if(Param._DEBUG)
+		tmpLine.AddToDoc()
+
+	var LowCurbPoint = streetPlane.ProjDir(pointToInsert, projDir).Point
 	
 	if(Param._DEBUG)
 	{
@@ -344,7 +364,7 @@ function extractLowCurbPoint(pointToInsert, theLocalCloud, theLine)
 * @property {number} CurbAngle the curb angle
 * @property {number} MinCurbHeight a threshold defining when the extraction should stop according to the height of the curb: if the curb is too small, no need to continue the extraction
 * @property {number} MaxCurbLength a threshold defining when the extraction should stop according to the length of the curb to extract
-* @property {number} unitsConv a factir allowing to convert between units
+* @property {number} unitsConv a factor allowing to convert between units
 * @property {boolean} _DEBUG boolean indicating if we want to debug and add temporary objects to the document
 */
 
@@ -354,25 +374,57 @@ function extractLowCurbPoint(pointToInsert, theLocalCloud, theLine)
 */
 function getParam()
 {
+	// Default values if no other values found
+	var InputStep = 1;
+	var InputCurbWidth = 0.5;
+	var InputCurbHeight = 0.1;
+	var InputCurbAngle = 20;
+	var InputMinCurbHeight = 0.01;
+	var InputMaxCurbLength = 200;
+	var InputunitsConv = 1;
+	// looks for an existing file with previous param
+	var filename = TempPath() + "\\LastCurbExtractionParameters.js";
+	var thefile = SFile.New(filename)
+	if(thefile.Exists())
+	{
+		thefile.Open(SFile.ReadOnly);
+		var alllines = thefile.ReadAll();
+		thefile.Close()
+		eval(alllines);
+	}
+
 	//Enter the sampling step
 	var theDialog = SDialog.New('Curb extraction parameters');
-	theDialog.AddLine("Sampling step (in m): ", true, {}, 1);
-	theDialog.AddLine("Curb Width (in m): ", true, {}, 0.5);
-	theDialog.AddLine("Curb Height (in m): ", true, {}, 0.1);
-	theDialog.AddLine("Curb Angle to vertical (in °): ", true, {}, 20);
-	theDialog.AddLine("Min Curb Height (in m): ", true, {}, 0.01);
-	theDialog.AddLine("Max Curb Length (in m): ", true, {}, 200);
+	theDialog.AddLine("Sampling step (in m): ", true, {}, InputStep);
+	theDialog.AddLine("Curb Width (in m): ", true, {}, InputCurbWidth);
+	theDialog.AddLine("Curb Height (in m): ", true, {}, InputCurbHeight);
+	theDialog.AddLine("Curb Angle to vertical (in °): ", true, {}, InputCurbAngle);
+	theDialog.AddLine("Min Curb Height (in m): ", true, {}, InputMinCurbHeight);
+	theDialog.AddLine("Max Curb Length (in m): ", true, {}, InputMaxCurbLength);
+	theDialog.AddLine("Document unit to meter convertion (1000 if document in mm): ", true, {}, InputunitsConv);
 	var result = theDialog.Execute();
 	if (result.ErrorCode != 0)// result == 0 means the user click on the "OK" button
 		StopWithMessage( "Operation canceled" );
 
-	var unitsConv = 1;
+	// save parameters
+	var line = "InputStep = " + result.InputTbl[0] + ";\n"
+	line += "InputCurbWidth = " + result.InputTbl[1] + ";\n"
+	line += "InputCurbHeight = " + result.InputTbl[2] + ";\n"
+	line += "InputCurbAngle = " + result.InputTbl[3] + ";\n"
+	line += "InputMinCurbHeight = " + result.InputTbl[4] + ";\n"
+	line += "InputMaxCurbLength = " + result.InputTbl[5] + ";\n"
+	line += "InputunitsConv = " + result.InputTbl[6] + ";\n"
+	thefile.Open(SFile.WriteOnly);
+	thefile.Write(line);
+	thefile.Close();
+
 	
+	var unitsConv = result.InputTbl[6];
 	return {
 			"Step": result.InputTbl[0]*unitsConv
 			, "CurbWidth": result.InputTbl[1]*unitsConv
 			, "CurbHeight": result.InputTbl[2]*unitsConv
-			, "CurbAngle": result.InputTbl[3]*unitsConv
+			, "CurbAngle": result.InputTbl[3]
 			, "MinCurbHeight": result.InputTbl[4]*unitsConv
 			, "MaxCurbLength": result.InputTbl[5]*unitsConv
 			, "unitsConv": unitsConv
